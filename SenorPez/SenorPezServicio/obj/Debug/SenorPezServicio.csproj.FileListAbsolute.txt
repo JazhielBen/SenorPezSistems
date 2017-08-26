@@ -1,0 +1,5 @@
+C:\Users\PinkFloyd\Desktop\SenorPez\SenorPez\SenorPezServicio\bin\SenorPezServicio.dll
+C:\Users\PinkFloyd\Desktop\SenorPez\SenorPez\SenorPezServicio\bin\SenorPezServicio.pdb
+C:\Users\PinkFloyd\Desktop\SenorPez\SenorPez\SenorPezServicio\obj\Debug\SenorPezServicio.csprojResolveAssemblyReference.cache
+C:\Users\PinkFloyd\Desktop\SenorPez\SenorPez\SenorPezServicio\obj\Debug\SenorPezServicio.dll
+C:\Users\PinkFloyd\Desktop\SenorPez\SenorPez\SenorPezServicio\obj\Debug\SenorPezServicio.pdb
