@@ -14,7 +14,7 @@ namespace SenorPezServicio
     {
 
         [OperationContract]
-        string GetData(int value);
+        string GetData(int value); 
 
         [OperationContract]
         CompositeType GetDataUsingDataContract(CompositeType composite);
