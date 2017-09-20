@@ -94,6 +94,6 @@ F:\Programando\C#\SenorPezSistems\SenorPez\SenorPezPrincipal\bin\ko\System.Spati
 F:\Programando\C#\SenorPezSistems\SenorPez\SenorPezPrincipal\bin\ru\System.Spatial.resources.dll
 F:\Programando\C#\SenorPezSistems\SenorPez\SenorPezPrincipal\bin\zh-Hans\System.Spatial.resources.dll
 F:\Programando\C#\SenorPezSistems\SenorPez\SenorPezPrincipal\bin\zh-Hant\System.Spatial.resources.dll
-F:\Programando\C#\SenorPezSistems\SenorPez\SenorPezPrincipal\obj\Debug\SenorPezPrincipal.csprojResolveAssemblyReference.cache
 F:\Programando\C#\SenorPezSistems\SenorPez\SenorPezPrincipal\obj\Debug\SenorPezPrincipal.dll
 F:\Programando\C#\SenorPezSistems\SenorPez\SenorPezPrincipal\obj\Debug\SenorPezPrincipal.pdb
+F:\Programando\C#\SenorPezSistems\SenorPez\SenorPezPrincipal\obj\Debug\SenorPezPrincipal.csprojResolveAssemblyReference.cache

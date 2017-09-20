@@ -193,6 +193,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -564,13 +565,14 @@
     <Content Include="Scripts\materialize\materialize.js" />
     <Content Include="Scripts\materialize\materialize.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Service References\ServiceReference\Service1.disco" />
-    <Content Include="Service References\ServiceReference\configuration91.svcinfo" />
-    <Content Include="Service References\ServiceReference\configuration.svcinfo" />
-    <Content Include="Service References\ServiceReference\Reference.svcmap">
+    <None Include="Service References\ServiceReference\Service1.disco" />
+    <None Include="Service References\ServiceReference\configuration91.svcinfo" />
+    <None Include="Service References\ServiceReference\configuration.svcinfo" />
+    <None Include="Service References\ServiceReference\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </Content>
+    </None>
+    <Content Include="Scripts\Views\Login\Login.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -610,7 +612,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
-    <Content Include="Service References\ServiceReference\Service1.wsdl" />
+    <None Include="Service References\ServiceReference\Service1.wsdl" />
     <None Include="Service References\ServiceReference\Service1.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -620,6 +622,7 @@
     <None Include="Service References\ServiceReference\Service12.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Views\Login\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -649,7 +652,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>63307</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:49545/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

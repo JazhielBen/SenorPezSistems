@@ -8,26 +8,19 @@ using System.Text;
 
 namespace SenorPezServicio
 {
-    // NOTA: puede usar el comando "Rename" del menú "Refactorizar" para cambiar el nombre de clase "Service1" en el código, en svc y en el archivo de configuración.
-    // NOTE: para iniciar el Cliente de prueba WCF para probar este servicio, seleccione Service1.svc o Service1.svc.cs en el Explorador de soluciones e inicie la depuración.
     public class Service1 : IService1
     {
-        public string GetData(int value)
+        public Int32 Login(Cargo _obj)
         {
-            return string.Format("You entered: {0}", value);
-        }
-
-        public CompositeType GetDataUsingDataContract(CompositeType composite)
-        {
-            if (composite == null)
+            DA_CARGO DA = new DA_CARGO();
+            try
             {
-                throw new ArgumentNullException("composite");
+                return DA.Login(_obj);
             }
-            if (composite.BoolValue)
+            catch (Exception excepcion)
             {
-                composite.StringValue += "Suffix";
+                throw (excepcion);
             }
-            return composite;
         }
     }
 }
