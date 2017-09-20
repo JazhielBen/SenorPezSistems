@@ -20,7 +20,7 @@ function login() {
         },
         success: function (result) {
             if (result.data == 'OK') {
-                location.href = '../Home/Index';
+                location.href = '../Home/Index'; 
             } 
         }
     });
