@@ -108,7 +108,8 @@ END
 CREATE TABLE MAE_CARGO
 (
 iCodCargo INTEGER NOT NULL PRIMARY KEY IDENTITY (1,1),
-vNombreCargo INTEGER NOT NULL,
+vNombreCargo VARCHAR(200) NOT NULL,
+vPassword VARCHAR(200) NOT NULL,
 iAcceso INTEGER NOT NULL,
 iCodEmpleado INTEGER NOT NULL,
 dtFechaRegistro DATETIME DEFAULT GETDATE(),
@@ -248,6 +249,61 @@ bActivo BIT DEFAULT 1
 GO
 
 PRINT 'TABLE COMPRA_DETALLE'
+GO
+----------------------------------------
+PRINT 'INSERT DATA'
+INSERT INTO [dbo].[MAE_PERSONA]([vNombre],[vApellido],[dtFechaNacimiento],[vTelefono],[vMail],[vDireccion],[vDocPersona],[iCodEmpleado],[dtFechaRegistro],[bActivo])
+     VALUES('JERAL N.','BENITES GONZALES','1994-04-11 00:00:00','999900948','JeralBenites@gmail.com','luriwashintown','48610078',777,GETDATE(),1)
+
+INSERT INTO [dbo].[MAE_CARGO](vNombreCargo,vPassword,iAcceso,iCodEmpleado)
+	VALUES ('ADMIN1','ADMIN1',1,777)
+
+INSERT INTO [dbo].[EMPLEADO](iCodPersona,iCodCargo)
+	VALUES(1,1)
+--------------------------------------------
+PRINT 'PROCEDURE'
+IF OBJECT_ID('[dbo].[SP_LOGIN]') IS NOT NULL
+BEGIN
+	DROP PROCEDURE [dbo].[SP_LOGIN]
+END
+GO
+CREATE PROCEDURE [dbo].[SP_LOGIN]
+(
+	@vUsuario VARCHAR(200),
+	@vPassword VARCHAR(200)
+)
+AS
+BEGIN
+	DECLARE @iCount INTEGER
+	SELECT 
+		@iCount  = COUNT(iCodCargo)
+	FROM
+	[dbo].[MAE_CARGO]
+	WHERE vNombreCargo =RTRIM(LTRIM(@vUsuario))
+	AND  vPassword = RTRIM(LTRIM(@vPassword))
+	IF(@iCount>0)
+	BEGIN
+		SELECT 1
+	END
+END
+GO
+PRINT 'PROCEDURE [dbo].[SP_LOGIN]' 
+--------------------------------------------
+
+
+--------------------------------------------
+--CONSULTAS
+--------------------------------------------
+SELECT 
+	EM.iCodEmpleado,
+	PER.vNombre + ' ' +PER.vApellido [NombreApellido],
+	CAR.vNombreCargo,
+	CAR.vPassword
+FROM [dbo].[EMPLEADO] EM
+INNER JOIN [dbo].[MAE_PERSONA] PER
+ON PER.iCodPersona = EM.iCodPersona
+INNER JOIN  [dbo].[MAE_CARGO] CAR
+ON CAR.iCodCargo = EM.iCodCargo
 GO
 
 
