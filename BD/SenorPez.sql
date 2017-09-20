@@ -254,12 +254,16 @@ GO
 PRINT 'INSERT DATA'
 INSERT INTO [dbo].[MAE_PERSONA]([vNombre],[vApellido],[dtFechaNacimiento],[vTelefono],[vMail],[vDireccion],[vDocPersona],[iCodEmpleado],[dtFechaRegistro],[bActivo])
      VALUES('JERAL N.','BENITES GONZALES','1994-04-11 00:00:00','999900948','JeralBenites@gmail.com','luriwashintown','48610078',777,GETDATE(),1)
+INSERT INTO [dbo].[MAE_PERSONA]([vNombre],[vApellido],[dtFechaNacimiento],[vTelefono],[vMail],[vDireccion],[vDocPersona],[iCodEmpleado],[dtFechaRegistro],[bActivo])
+     VALUES('Jazhiel N.','BENITES GONZALES','1992-09-25 00:00:00','999900180','Jazhielbg@gmail.com','luriwashintown','47753860',888,GETDATE(),1)
 
 INSERT INTO [dbo].[MAE_CARGO](vNombreCargo,vPassword,iAcceso,iCodEmpleado)
 	VALUES ('ADMIN1','ADMIN1',1,777)
 
 INSERT INTO [dbo].[EMPLEADO](iCodPersona,iCodCargo)
 	VALUES(1,1)
+INSERT INTO [dbo].[EMPLEADO](iCodPersona,iCodCargo)
+	VALUES(2,1)
 --------------------------------------------
 PRINT 'PROCEDURE'
 IF OBJECT_ID('[dbo].[SP_LOGIN]') IS NOT NULL
