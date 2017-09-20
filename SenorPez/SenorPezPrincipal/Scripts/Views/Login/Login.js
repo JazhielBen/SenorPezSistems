@@ -16,7 +16,7 @@ function login() {
         type: 'POST',
         data: {
             vNombreCargo : $('#username').val(),
-            vPassword : $('#password').val()
+            vPassword : $('#password').val() 
         },
         success: function (result) {
             if (result.data == 'OK') {
