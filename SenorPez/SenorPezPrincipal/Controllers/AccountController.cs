@@ -10,6 +10,7 @@ using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using SenorPezPrincipal.Filters;
 using SenorPezPrincipal.Models;
+using SenorPezPrincipal.ServiceReference1;
 
 namespace SenorPezPrincipal.Controllers
 {
@@ -35,14 +36,64 @@ namespace SenorPezPrincipal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
+           /* if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
                 return RedirectToLocal(returnUrl);
             }
 
             // Si llegamos a este punto, es que se ha producido un error y volvemos a mostrar el formulario
             ModelState.AddModelError("", "El nombre de usuario o la contraseña especificados son incorrectos.");
-            return View(model);
+            return View(model);*/
+            //if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
+            //{
+            //    return RedirectToLocal(returnUrl);
+            //}
+
+            //// If we got this far, something failed, redisplay form
+            //ModelState.AddModelError("", "The user name or password provided is incorrect.");
+            //return View(model);
+            Cargo x = new Cargo();
+            Service1Client client = new Service1Client();
+            try
+            {
+                x.vNombreCargo = model.UserName;
+                x.vPassword = model.Password;
+                
+                int  resultazado = client.Login(x);
+                FormsAuthentication.SetAuthCookie(model.UserName, false);
+                        /*  Session["Usuario"] = oLista[0].Usuario;
+                          Session["iCodUsuario"] = oLista[0].CodUsuario;
+                          Session["Nombres"] = oLista[0].Nombre;
+                          Session["iCodUnidad"] = oLista[0].Unidad;
+                          Session["Tipo"] = oLista[0].Tipo;*/
+                /*switch (Session["Tipo"].ToString())
+                          {
+                              case "1": // PROVEEDOR
+                                  return RedirectToAction("Index", "Generales");
+                              case "2": // INFORMATICO
+                                  return RedirectToAction("Index", "Generales");
+                              case "3": // SUP.COMPRA
+                                  return RedirectToAction("LogOff", "Account"); ;
+                              case "4": // JUT
+                                  return RedirectToAction("LogOff", "Account");
+                              default:
+                                  return RedirectToAction("LogOff", "Account");
+                          }*/
+                switch(resultazado)
+                {
+                    case 1:
+                        return RedirectToAction("Index", "Home");
+                    case 2:
+                        return RedirectToAction("Index", "Generales");
+                    
+                    default:ViewBag.Error = "Usuario y/o clave incorrectos!";
+                          return View(model);
+                }
+            }
+            catch (Exception e)
+            {
+                throw(e);
+            } 
         }
 
         //
@@ -54,7 +105,7 @@ namespace SenorPezPrincipal.Controllers
         {
             WebSecurity.Logout();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         //

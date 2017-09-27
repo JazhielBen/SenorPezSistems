@@ -6,4 +6,3 @@ F:\Programando\C#\SenorPezSistems\SenorPez\SenorPezServicio\bin\SenorPezServicio
 F:\Programando\C#\SenorPezSistems\SenorPez\SenorPezServicio\bin\SenorPezServicio.pdb
 F:\Programando\C#\SenorPezSistems\SenorPez\SenorPezServicio\obj\Debug\SenorPezServicio.dll
 F:\Programando\C#\SenorPezSistems\SenorPez\SenorPezServicio\obj\Debug\SenorPezServicio.pdb
-F:\Programando\C#\SenorPezSistems\SenorPez\SenorPezServicio\obj\Debug\SenorPezServicio.csprojResolveAssemblyReference.cache
