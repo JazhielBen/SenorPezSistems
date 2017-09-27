@@ -13,22 +13,17 @@
 </head>
 <body>
     <header>
-        <div class="content-wrapper">
-            <div class="float-left">
-                <p class="site-title">@Html.ActionLink("su logotipo aquí", "Index", "Home")</p>
-            </div>
-            <div class="float-right">
-                <section id="login">
-                    @Html.Partial("_LoginPartial")
-                </section>
+         <div class="nav-wrapper">
                 <nav>
-                    <ul id="menu">
-                        <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
-                        <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
-                        <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>
-                    </ul>
+                    <div class="nav-wrapper">
+                        <li class="brand-logo">Logo</li>
+                        <ul class="right"><li>@Html.Partial("_LoginPartial")</li>
+                            <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
+                            <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
+                            <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>
+                        </ul>
+                    </div>
                 </nav>
-            </div>
         </div>
     </header>
     <div id="body">
