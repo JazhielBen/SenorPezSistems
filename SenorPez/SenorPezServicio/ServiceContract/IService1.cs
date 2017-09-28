@@ -12,7 +12,7 @@ namespace SenorPezServicio
     public interface IService1
     {
         [OperationContract]
-        Int32 Login (Cargo _Obj);
+        List<Cargo> Login(Cargo _Obj);
 
     }
 }

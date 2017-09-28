@@ -53,42 +53,29 @@ namespace SenorPezPrincipal.Controllers
             //ModelState.AddModelError("", "The user name or password provided is incorrect.");
             //return View(model);
             Cargo x = new Cargo();
+            List<Cargo> xList = new List<Cargo>();
             Service1Client client = new Service1Client();
             try
             {
                 x.vNombreCargo = model.UserName;
                 x.vPassword = model.Password;
-                
-                int  resultazado = client.Login(x);
-                FormsAuthentication.SetAuthCookie(model.UserName, false);
-                        /*  Session["Usuario"] = oLista[0].Usuario;
-                          Session["iCodUsuario"] = oLista[0].CodUsuario;
-                          Session["Nombres"] = oLista[0].Nombre;
-                          Session["iCodUnidad"] = oLista[0].Unidad;
-                          Session["Tipo"] = oLista[0].Tipo;*/
-                /*switch (Session["Tipo"].ToString())
-                          {
-                              case "1": // PROVEEDOR
-                                  return RedirectToAction("Index", "Generales");
-                              case "2": // INFORMATICO
-                                  return RedirectToAction("Index", "Generales");
-                              case "3": // SUP.COMPRA
-                                  return RedirectToAction("LogOff", "Account"); ;
-                              case "4": // JUT
-                                  return RedirectToAction("LogOff", "Account");
-                              default:
-                                  return RedirectToAction("LogOff", "Account");
-                          }*/
-                switch(resultazado)
+                xList = client.Login(x);
+                if (xList.Count > 0)
                 {
-                    case 1:
-                        return RedirectToAction("Index", "Home");
-                    case 2:
-                        return RedirectToAction("Index", "Generales");
-                    
-                    default:ViewBag.Error = "Usuario y/o clave incorrectos!";
-                          return View(model);
+                    FormsAuthentication.SetAuthCookie(model.UserName, false);
+                    Session["iCodPerfil"] = xList[0].iCodPerfil;
+                    Session["iCodEmpleado"] = xList[0].iCodEmpleado;
+                    Session["vUsuario"] = xList[0].vUsuario;
+                    Session["vPassword"] = xList[0].vPassword;
+                    switch (Session["iCodPerfil"].ToString())
+                    {
+                        case "3": // PERFIL MAESTRO
+                            return RedirectToAction("Index", "Home");
+                        default: return RedirectToAction("Login", "Account");
+                        // return RedirectToAction("LogOff", "Account");
+                    }
                 }
+                else { return RedirectToAction("Login", "Account"); }//return RedirectToAction("LogOff", "Account"); }
             }
             catch (Exception e)
             {

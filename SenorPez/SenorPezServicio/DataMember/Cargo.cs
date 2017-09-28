@@ -23,8 +23,12 @@ namespace SenorPezServicio
         [DataMember]
         public Int32  iCodEmpleado      { get; set; }
         [DataMember]
-        public Int32  dtFechaRegistro   { get; set; }
+        public DateTime  dtFechaRegistro   { get; set; }
         [DataMember]
-        public Int32  bActivo           { get; set; }
+        public Boolean  bActivo           { get; set; }
+        [DataMember]
+        public Int32 iCodPerfil{ get; set; }
+        [DataMember]
+        public String vUsuario { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace SenorPezServicio
 {
     public class Service1 : IService1
     {
-        public Int32 Login(Cargo _obj)
+        public List<Cargo> Login(Cargo _obj)
         {
             DA_CARGO DA = new DA_CARGO();
             try

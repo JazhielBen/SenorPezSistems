@@ -12,6 +12,17 @@ CREATE DATABASE BDPez;
 GO
 USE BDPez
 GO
+IF OBJECT_ID('MAE_PERFILES') IS NOT NULL
+BEGIN
+	DROP TABLE MAE_PERFILES;
+END
+GO
+CREATE TABLE MAE_PERFILES
+(
+	iCodPerfiles	INTEGER PRIMARY KEY IDENTITY(1,1),
+	vNombrePerfil	VARCHAR(200),
+	bActivo			BIT DEFAULT 1
+)
 
 /*MAE_PERSONA*/
 IF EXISTS(SELECT * FROM SYSOBJECTS WHERE NAME = 'MAE_PERSONA')
@@ -109,7 +120,6 @@ CREATE TABLE MAE_CARGO
 (
 iCodCargo INTEGER NOT NULL PRIMARY KEY IDENTITY (1,1),
 vNombreCargo VARCHAR(200) NOT NULL,
-vPassword VARCHAR(200) NOT NULL,
 iAcceso INTEGER NOT NULL,
 iCodEmpleado INTEGER NOT NULL,
 dtFechaRegistro DATETIME DEFAULT GETDATE(),
@@ -150,6 +160,8 @@ CREATE TABLE EMPLEADO
 iCodEmpleado INTEGER NOT NULL PRIMARY KEY IDENTITY (1,1),
 iCodPersona INTEGER NOT NULL REFERENCES MAE_PERSONA,
 iCodCargo INTEGER NOT NULL REFERENCES MAE_CARGO,
+vUsuario VARCHAR(200) NOT NULL,
+vPassword VARCHAR(200) NOT NULL, 
 dtFechaRegistro DATETIME DEFAULT GETDATE(),
 bActivo BIT DEFAULT 1
 )
@@ -250,20 +262,44 @@ GO
 
 PRINT 'TABLE COMPRA_DETALLE'
 GO
+/*COMPRA_DETALLE*/
+IF EXISTS(SELECT * FROM SYSOBJECTS WHERE NAME = 'PERFIL_USUARIO')
+BEGIN
+      DROP TABLE PERFIL_USUARIO
+END
+GO
+CREATE TABLE PERFIL_USUARIO
+(
+iCodPerfilUsuario	INTEGER NOT NULL PRIMARY KEY IDENTITY (1,1),
+iCodPerfil INTEGER NOT NULL REFERENCES MAE_PERFILES,
+iCodCargo INTEGER NOT NULL REFERENCES [dbo].[MAE_CARGO],
+bActivo BIT DEFAULT 1
+)
+GO
+
+PRINT 'TABLE PERFIL_USUARIO'
+GO
 ----------------------------------------
 PRINT 'INSERT DATA'
-INSERT INTO [dbo].[MAE_PERSONA]([vNombre],[vApellido],[dtFechaNacimiento],[vTelefono],[vMail],[vDireccion],[vDocPersona],[iCodEmpleado],[dtFechaRegistro],[bActivo])
-     VALUES('JERAL N.','BENITES GONZALES','1994-04-11 00:00:00','999900948','JeralBenites@gmail.com','luriwashintown','48610078',777,GETDATE(),1)
-INSERT INTO [dbo].[MAE_PERSONA]([vNombre],[vApellido],[dtFechaNacimiento],[vTelefono],[vMail],[vDireccion],[vDocPersona],[iCodEmpleado],[dtFechaRegistro],[bActivo])
-     VALUES('Jazhiel N.','BENITES GONZALES','1992-09-25 00:00:00','999900180','Jazhielbg@gmail.com','luriwashintown','47753860',888,GETDATE(),1)
 
-INSERT INTO [dbo].[MAE_CARGO](vNombreCargo,vPassword,iAcceso,iCodEmpleado)
-	VALUES ('ADMIN1','ADMIN1',1,777)
+INSERT INTO MAE_PERFILES (vNombrePerfil) VALUES( 'NO' )
+INSERT INTO MAE_PERFILES (vNombrePerfil) VALUES( 'PARCIAL' )
+INSERT INTO MAE_PERFILES (vNombrePerfil) VALUES( 'TOTAL' ) 
 
-INSERT INTO [dbo].[EMPLEADO](iCodPersona,iCodCargo)
-	VALUES(1,1)
-INSERT INTO [dbo].[EMPLEADO](iCodPersona,iCodCargo)
-	VALUES(2,1)
+INSERT INTO [dbo].[MAE_PERSONA]([vNombre],[vApellido],[dtFechaNacimiento],[vTelefono],[vMail],[vDireccion],[vDocPersona],[iCodEmpleado],[dtFechaRegistro],[bActivo])
+     VALUES('JERAL N.','BENITES GONZALES','1994-11-04 00:00:00','999900948','JeralBenites@gmail.com','luriwashintown','48610078',777,GETDATE(),1)
+INSERT INTO [dbo].[MAE_PERSONA]([vNombre],[vApellido],[dtFechaNacimiento],[vTelefono],[vMail],[vDireccion],[vDocPersona],[iCodEmpleado],[dtFechaRegistro],[bActivo])
+     VALUES('JAZHIEL N.','BENITES GONZALES','1992-25-11 00:00:00','999900180','Jazhielbg@gmail.com','luriwashintown','47753860',888,GETDATE(),1)
+
+INSERT INTO [dbo].[MAE_CARGO](vNombreCargo,iAcceso,iCodEmpleado)
+	VALUES ('ADMIN1',1,777)
+
+INSERT INTO [dbo].[EMPLEADO](iCodPersona,iCodCargo,vUsuario,vPassword)
+	VALUES(1,1,'ADMIN','JERAL')
+INSERT INTO [dbo].[EMPLEADO](iCodPersona,iCodCargo,vUsuario,vPassword)
+	VALUES(2,1,'ADMIN','JAZHIEL')
+
+INSERT INTO PERFIL_USUARIO (iCodPerfil,iCodCargo)VALUES(3,1)
 --------------------------------------------
 PRINT 'PROCEDURE'
 IF OBJECT_ID('[dbo].[SP_LOGIN]') IS NOT NULL
@@ -271,34 +307,40 @@ BEGIN
 	DROP PROCEDURE [dbo].[SP_LOGIN]
 END
 GO
+--[dbo].[SP_LOGIN]
 CREATE PROCEDURE [dbo].[SP_LOGIN]
 (
-	@vUsuario VARCHAR(200),
-	@vPassword VARCHAR(200)
+	@vUsuario VARCHAR(200) = NULL,
+	@vPassword VARCHAR(200)= NULL
 )
 AS
 BEGIN
-	DECLARE @iCount INTEGER
-	SELECT 
-		@iCount  = COUNT(iCodCargo)
+	SELECT 		 
+		 U.iCodPerfil
+		,E.iCodEmpleado
+		,E.vUsuario
+		,E.vPassword
 	FROM
-	[dbo].[MAE_CARGO]
-	WHERE vNombreCargo =RTRIM(LTRIM(@vUsuario))
-	AND  vPassword = RTRIM(LTRIM(@vPassword))
-	IF(@iCount>0)
-	BEGIN
-		SELECT 1
-	END
+	[dbo].[MAE_CARGO] c
+	INNER JOIN PERFIL_USUARIO u
+	ON U.iCodCargo = C.iCodCargo
+	INNER JOIN  [dbo].[EMPLEADO] E
+	ON E.iCodCargo = C.iCodCargo
+	INNER JOIN [dbo].[MAE_PERSONA] PE
+	ON PE.iCodPersona = E.iCodPersona
+	WHERE vNombreCargo =ISNULL(RTRIM(LTRIM(@vUsuario)),vNombreCargo)
+	AND  vPassword = ISNULL(RTRIM(LTRIM(@vPassword)),vPassword)
+	AND C.bActivo = 1 AND U.bActivo = 1 AND E.bActivo = 1 AND PE.bActivo = 1
 END
 GO
 PRINT 'PROCEDURE [dbo].[SP_LOGIN]' 
 --------------------------------------------
 
-
+EXEC [dbo].[SP_LOGIN] 'ADMIN1','JAZHIEL'
 --------------------------------------------
 --CONSULTAS
 --------------------------------------------
-SELECT 
+/*SELECT 
 	EM.iCodEmpleado,
 	PER.vNombre + ' ' +PER.vApellido [NombreApellido],
 	CAR.vNombreCargo,
@@ -308,6 +350,6 @@ INNER JOIN [dbo].[MAE_PERSONA] PER
 ON PER.iCodPersona = EM.iCodPersona
 INNER JOIN  [dbo].[MAE_CARGO] CAR
 ON CAR.iCodCargo = EM.iCodCargo
-GO
+GO*/
 
 
