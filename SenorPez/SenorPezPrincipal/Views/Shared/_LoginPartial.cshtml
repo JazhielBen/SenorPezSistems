@@ -6,6 +6,9 @@
             <a href="javascript:document.getElementById('logoutForm').submit()">Cerrar sesión</a>
         }
     </text>
+      <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>  
 } else {
     <ul>
         <li>@Html.ActionLink("Registrarse", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
