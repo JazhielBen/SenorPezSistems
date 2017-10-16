@@ -203,3 +203,4 @@ F:\Programando\C#\SenorPezSistems\SenorPez\SenorPezPrincipal\bin\zh-Hans\System.
 F:\Programando\C#\SenorPezSistems\SenorPez\SenorPezPrincipal\bin\zh-Hant\System.Spatial.resources.dll
 F:\Programando\C#\SenorPezSistems\SenorPez\SenorPezPrincipal\obj\Debug\SenorPezPrincipal.dll
 F:\Programando\C#\SenorPezSistems\SenorPez\SenorPezPrincipal\obj\Debug\SenorPezPrincipal.pdb
+F:\Programando\C#\SenorPezSistems\SenorPez\SenorPezPrincipal\obj\Debug\SenorPezPrincipal.csprojResolveAssemblyReference.cache
