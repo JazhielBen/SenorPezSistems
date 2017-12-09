@@ -192,7 +192,10 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ControlSessionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MantenimientoController.cs" />
+    <Compile Include="Controllers\Metodos.cs" />
     <Compile Include="Controllers\SweetController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -208,6 +211,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\css\Login.css" />
     <Content Include="Content\css\demo.css" />
     <Content Include="Content\css\material-dashboard.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.css" />
@@ -367,7 +371,17 @@
     <Content Include="Content\DataTables\images\sort_desc.png" />
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
+    <Content Include="Content\font-awesome\css\font-awesome.css" />
+    <Content Include="Content\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\ico\apple-touch-icon-114-precomposed.png" />
+    <Content Include="Content\ico\apple-touch-icon-144-precomposed.png" />
+    <Content Include="Content\ico\apple-touch-icon-57-precomposed.png" />
+    <Content Include="Content\ico\apple-touch-icon-72-precomposed.png" />
+    <Content Include="Content\ico\favicon.png" />
     <Content Include="Content\img\apple-icon.png" />
+    <Content Include="Content\img\backgrounds\1%402x.jpg" />
+    <Content Include="Content\img\backgrounds\1.jpg" />
     <Content Include="Content\img\cover.jpeg" />
     <Content Include="Content\img\faces\marc.jpg" />
     <Content Include="Content\img\favicon.png" />
@@ -378,6 +392,20 @@
     <Content Include="Content\img\sidebar-3.jpg" />
     <Content Include="Content\img\sidebar-4.jpg" />
     <Content Include="Content\img\tim_80x80.png" />
+    <Content Include="Content\js\bootstrap-notify.js" />
+    <Content Include="Content\js\bootstrap.min.js" />
+    <Content Include="Content\js\chartist.min.js" />
+    <Content Include="Content\js\demo.js" />
+    <Content Include="Content\js\jquery-3.1.0.min.js" />
+    <Content Include="Content\js\jquery.backstretch.js" />
+    <Content Include="Content\js\jquery.backstretch.min.js" />
+    <Content Include="Content\js\material-dashboard.js" />
+    <Content Include="Content\js\material.min.js" />
+    <Content Include="Content\js\placeholder.js" />
+    <Content Include="Content\js\scripts.js" />
+    <Content Include="Images\sidebar-4.jpg" />
+    <Content Include="Images\usu.png" />
+    <Content Include="Scripts\ControlSession.js" />
     <Content Include="Scripts\js\bootstrap-notify.js" />
     <Content Include="Scripts\js\bootstrap.min.js" />
     <Content Include="Scripts\js\chartist.min.js" />
@@ -560,6 +588,37 @@
     <Content Include="Content\sass\md\_togglebutton.scss" />
     <Content Include="Content\sass\md\_typography.scss" />
     <Content Include="Content\sass\md\_variables.scss" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="Content\font-awesome\less\animated.less" />
+    <Content Include="Content\font-awesome\less\bordered-pulled.less" />
+    <Content Include="Content\font-awesome\less\core.less" />
+    <Content Include="Content\font-awesome\less\fixed-width.less" />
+    <Content Include="Content\font-awesome\less\font-awesome.less" />
+    <Content Include="Content\font-awesome\less\icons.less" />
+    <Content Include="Content\font-awesome\less\larger.less" />
+    <Content Include="Content\font-awesome\less\list.less" />
+    <Content Include="Content\font-awesome\less\mixins.less" />
+    <Content Include="Content\font-awesome\less\path.less" />
+    <Content Include="Content\font-awesome\less\rotated-flipped.less" />
+    <Content Include="Content\font-awesome\less\stacked.less" />
+    <Content Include="Content\font-awesome\less\variables.less" />
+    <Content Include="Content\font-awesome\scss\font-awesome.scss" />
+    <Content Include="Content\font-awesome\scss\_animated.scss" />
+    <Content Include="Content\font-awesome\scss\_bordered-pulled.scss" />
+    <Content Include="Content\font-awesome\scss\_core.scss" />
+    <Content Include="Content\font-awesome\scss\_fixed-width.scss" />
+    <Content Include="Content\font-awesome\scss\_icons.scss" />
+    <Content Include="Content\font-awesome\scss\_larger.scss" />
+    <Content Include="Content\font-awesome\scss\_list.scss" />
+    <Content Include="Content\font-awesome\scss\_mixins.scss" />
+    <Content Include="Content\font-awesome\scss\_path.scss" />
+    <Content Include="Content\font-awesome\scss\_rotated-flipped.scss" />
+    <Content Include="Content\font-awesome\scss\_stacked.scss" />
+    <Content Include="Content\font-awesome\scss\_variables.scss" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
@@ -578,7 +637,10 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\Views\Login\index.js" />
     <Content Include="Scripts\Views\Login\Login.js" />
-    <Content Include="Service References\ServiceReference1\SenorPezPrincipal.ServiceReference1.Cargo.datasource">
+    <Content Include="Service References\ServiceReference1\SenorPezPrincipal.ServiceReference1.CARGO1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\ServiceReference1\SenorPezPrincipal.ServiceReference1.BE_INFO.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <None Include="Service References\ServiceReference1\Service1.disco" />
@@ -638,6 +700,11 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Views\Sweet\Alert.cshtml" />
+    <Content Include="Views\ControlSession\Index.cshtml" />
+    <None Include="Service References\ServiceReference1\Service13.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Views\Mantenimiento\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

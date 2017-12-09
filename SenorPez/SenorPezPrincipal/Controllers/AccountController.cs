@@ -24,7 +24,16 @@ namespace SenorPezPrincipal.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
+            if (Session["Cargo_Empleado"] == null)
+            {
+                //WebSecurity.Logout();
+                FormsAuthentication.SignOut();
+                Session.Abandon();
+            }
+            else
+            {
+                ViewBag.ReturnUrl = returnUrl;
+            }
             return View();
         }
 
@@ -33,49 +42,33 @@ namespace SenorPezPrincipal.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-           /* if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
-            {
-                return RedirectToLocal(returnUrl);
-            }
-
-            // Si llegamos a este punto, es que se ha producido un error y volvemos a mostrar el formulario
-            ModelState.AddModelError("", "El nombre de usuario o la contraseña especificados son incorrectos.");
-            return View(model);*/
-            //if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
-            //{
-            //    return RedirectToLocal(returnUrl);
-            //}
-
-            //// If we got this far, something failed, redisplay form
-            //ModelState.AddModelError("", "The user name or password provided is incorrect.");
-            //return View(model);
-            Cargo x = new Cargo();
-            List<Cargo> xList = new List<Cargo>();
+            CARGO x = new CARGO();
             Service1Client client = new Service1Client();
             try
             {
                 x.vNombreCargo = model.UserName;
                 x.vPassword = model.Password;
-                xList = client.Login(x);
-                if (xList.Count > 0)
+                x = client.Login(x);
+                if (x.iCodEmpleado > 0)
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, false);
-                    Session["iCodPerfil"] = xList[0].iCodPerfil;
-                    Session["iCodEmpleado"] = xList[0].iCodEmpleado;
-                    Session["vUsuario"] = xList[0].vUsuario;
-                    Session["vPassword"] = xList[0].vPassword;
-                    switch (Session["iCodPerfil"].ToString())
+                    Session["Cargo_Empleado"] = x;
+                    switch (x.iCodPerfil)
                     {
-                        case "3": // PERFIL MAESTRO
+                        case 3: // PERFIL MAESTRO
                             return RedirectToAction("Index", "Home");
-                        default: return RedirectToAction("Login", "Account");
-                        // return RedirectToAction("LogOff", "Account");
+                        default: 
+                            return RedirectToAction("Login", "Account");
                     }
                 }
-                else { return RedirectToAction("Login", "Account"); }//return RedirectToAction("LogOff", "Account"); }
+                else
+                {
+                    Session["Error_Messague"] = "Usuario y/o clave incorrectos!";                    
+                    return RedirectToAction("Login", "Account"); 
+                }
             }
             catch (Exception e)
             {
@@ -90,8 +83,9 @@ namespace SenorPezPrincipal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            WebSecurity.Logout();
-
+            //WebSecurity.Logout();
+            FormsAuthentication.SignOut();
+            Session.Abandon();
             return RedirectToAction("Login", "Account");
         }
 
@@ -165,13 +159,13 @@ namespace SenorPezPrincipal.Controllers
 
         public ActionResult Manage(ManageMessageId? message)
         {
-            ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "La contraseña se ha cambiado."
-                : message == ManageMessageId.SetPasswordSuccess ? "Su contraseña se ha establecido."
-                : message == ManageMessageId.RemoveLoginSuccess ? "El inicio de sesión externo se ha quitado."
-                : "";
-            ViewBag.HasLocalPassword = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
-            ViewBag.ReturnUrl = Url.Action("Manage");
+            //ViewBag.StatusMessage =
+            //    message == ManageMessageId.ChangePasswordSuccess ? "La contraseña se ha cambiado."
+            //    : message == ManageMessageId.SetPasswordSuccess ? "Su contraseña se ha establecido."
+            //    : message == ManageMessageId.RemoveLoginSuccess ? "El inicio de sesión externo se ha quitado."
+            //    : "";
+            //ViewBag.HasLocalPassword = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+            //ViewBag.ReturnUrl = Url.Action("Manage");
             return View();
         }
 
@@ -182,57 +176,57 @@ namespace SenorPezPrincipal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Manage(LocalPasswordModel model)
         {
-            bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
-            ViewBag.HasLocalPassword = hasLocalAccount;
-            ViewBag.ReturnUrl = Url.Action("Manage");
-            if (hasLocalAccount)
-            {
-                if (ModelState.IsValid)
-                {
-                    // ChangePassword iniciará una excepción en lugar de devolver false en determinados escenarios de error.
-                    bool changePasswordSucceeded;
-                    try
-                    {
-                        changePasswordSucceeded = WebSecurity.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
-                    }
-                    catch (Exception)
-                    {
-                        changePasswordSucceeded = false;
-                    }
+            //bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+            //ViewBag.HasLocalPassword = hasLocalAccount;
+            //ViewBag.ReturnUrl = Url.Action("Manage");
+            //if (hasLocalAccount)
+            //{
+            //    if (ModelState.IsValid)
+            //    {
+            //        // ChangePassword iniciará una excepción en lugar de devolver false en determinados escenarios de error.
+            //        bool changePasswordSucceeded;
+            //        try
+            //        {
+            //            changePasswordSucceeded = WebSecurity.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
+            //        }
+            //        catch (Exception)
+            //        {
+            //            changePasswordSucceeded = false;
+            //        }
 
-                    if (changePasswordSucceeded)
-                    {
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "La contraseña actual es incorrecta o la nueva contraseña no es válida.");
-                    }
-                }
-            }
-            else
-            {
-                // El usuario no dispone de contraseña local, por lo que debe quitar todos los errores de validación generados por un
-                // campo OldPassword
-                ModelState state = ModelState["OldPassword"];
-                if (state != null)
-                {
-                    state.Errors.Clear();
-                }
+            //        if (changePasswordSucceeded)
+            //        {
+            //            return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
+            //        }
+            //        else
+            //        {
+            //            ModelState.AddModelError("", "La contraseña actual es incorrecta o la nueva contraseña no es válida.");
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    // El usuario no dispone de contraseña local, por lo que debe quitar todos los errores de validación generados por un
+            //    // campo OldPassword
+            //    ModelState state = ModelState["OldPassword"];
+            //    if (state != null)
+            //    {
+            //        state.Errors.Clear();
+            //    }
 
-                if (ModelState.IsValid)
-                {
-                    try
-                    {
-                        WebSecurity.CreateAccount(User.Identity.Name, model.NewPassword);
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
-                    }
-                    catch (Exception)
-                    {
-                        ModelState.AddModelError("", String.Format("No se puede crear una cuenta local. Es posible que ya exista una cuenta con el nombre \"{0}\".", User.Identity.Name));
-                    }
-                }
-            }
+            //    if (ModelState.IsValid)
+            //    {
+            //        try
+            //        {
+            //            WebSecurity.CreateAccount(User.Identity.Name, model.NewPassword);
+            //            return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
+            //        }
+            //        catch (Exception)
+            //        {
+            //            ModelState.AddModelError("", String.Format("No se puede crear una cuenta local. Es posible que ya exista una cuenta con el nombre \"{0}\".", User.Identity.Name));
+            //        }
+            //    }
+            //}
 
             // Si llegamos a este punto, es que se ha producido un error y volvemos a mostrar el formulario
             return View(model);

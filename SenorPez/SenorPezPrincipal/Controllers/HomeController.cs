@@ -1,8 +1,11 @@
-﻿using System;
+﻿using SenorPezPrincipal.ServiceReference1;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
+using WebMatrix.WebData;
 
 namespace SenorPezPrincipal.Controllers
 {
@@ -10,9 +13,34 @@ namespace SenorPezPrincipal.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
+            if (Session["Cargo_Empleado"] == null)
+            {
+                FormsAuthentication.SignOut();
+                Session.Abandon();
+                return RedirectToAction("Login", "Account");
+            }
+            else
+            {
+                ViewBag.MenuAccesoConsulta = "class = active";
+                return View();
+            }
+        }
 
-            return View();
+        [HttpPost]
+        public ActionResult LoadInfo(BE_INFO _Obj)
+        {
+            Service1Client client = new Service1Client();
+            try
+            {
+                _Obj = client.GET_INFO(_Obj);
+
+            }
+            catch (Exception)
+            {
+
+            }
+            return Json(_Obj, JsonRequestBehavior.AllowGet);
+
         }
 
         public ActionResult About()

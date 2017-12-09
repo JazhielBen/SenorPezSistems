@@ -1,60 +1,68 @@
 ﻿@model SenorPezPrincipal.Models.LoginModel
-
+<link href="~/Content/css/Login.css" rel="stylesheet" />
 @{
     ViewBag.Title = "Iniciar Session";
     ViewBag.Pagina = "login";
 }
-
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-</hgroup>
-
-@using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })){
+@using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
+{
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
-@Html.Hidden("UrlEnviarMailRecuperacion", Url.Action("EnviarMailRecuperacion", "Account"))
-<div class="row valign-wrapper">
-    <div class="col s6 offset-s3 valign">
-        <div id="login-page" class="container">
-            <div class="col s12 z-depth-4 card-panel">
+    @Html.Hidden("UrlEnviarMailRecuperacion", Url.Action("EnviarMailRecuperacion", "Account"))
+    
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+    <link href="~/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="~/Content/ico/favicon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="~/Content/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="~/Content/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="~/Content/ico/apple-touch-icon-57-precomposed.png">    
+    <div class="top-content">
+        <div class="inner-bg">
+            <div class="container">
                 <div class="row">
-                    <div class="input-field col s12 center">
-                        <img src="images/login-logo.png" alt="" class="circle responsive-img valign profile-image-login">
-                        <p class="center login-form-text">Señor Pez @DateTime.Now.Year - Ztoned </p>
+                    <div class="col-sm-8 col-sm-offset-2 text">
+                        <h1><strong>BIENVENIDO</strong> </h1>
                     </div>
                 </div>
-                <form class="form-horizontal" role="form" method="post" action="~/Account/Login">
-                    <div class="input-field col s12">
-                        <i class="mdi-social-person-outline prefix"></i>
-                        <input id="modelusername" name="model.UserName" placeholder="USUARIO" required="" type="text">
-                        <label for="model.UserName" class="center-align">Usuario</label>
-                    </div>
-                    <div class="input-field col s12">
-                        <i class="mdi-action-lock-outline prefix"></i>
-                        <input id="model.Password" name="model.Password" placeholder="Contraseña" required="" type="password">
-                        <label for="model.Password">Contraseña</label>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input class="btn waves-effect waves-light col s12" type="submit" value="Login Papu">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3 form-box">
+                        <div class="form-top">
+                            <div class="form-top-left">
+                                <h3>Login</h3>
+                                <p>MatSoft v1.0</p>
+                            </div>
+                            <div class="form-top-right">
+                                <i class="fa fa-lock"></i>
+                            </div>
+                        </div>
+                        <div class="form-bottom">
+                            <form class="form-horizontal" role="form" method="post" action="~/Account/Login">
+                                <div class="form-group">
+                                    <label class="sr-only" for="form-username">Username</label>
+                                    <input type="text" id="modelusername" name="model.UserName" placeholder="Usuario" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="sr-only" for="form-password">Password</label>
+                                    <input type="password" id="model.Password" name="model.Password" placeholder="Contraseña" required>
+                                </div>
+                                @if (HttpContext.Current.Session["Error_Messague"] != null)
+                                {
+                                    <div class="col-md-12 alert alert-danger" style="margin-top: 5px">
+                                        <a href="#" class="close" data-dismiss="alert">×</a>
+                                        <strong>Error!</strong> @HttpContext.Current.Session["Error_Messague"]
+                                    </div>
+                                }
+                                <button type="submit" style="margin-top: 10px" class="btn">Ingresar</button>
+                            </form>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="input-field col s6 m6 l6">
-                            <p>
-                                <input type="hidden" name="returnUrl" id="returnUrl" value="" />
-                                @Html.ActionLink("Regístrese", "Register") si no tiene ninguna cuenta.
-                            </p>
-                        </div>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
 }
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
 <script src="~/Scripts/Views/Login/Login.js" defer></script>
+<script src="~/Content/js/scripts.js"></script>

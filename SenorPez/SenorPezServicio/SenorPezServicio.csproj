@@ -64,7 +64,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DABD\DA_CARGO.cs" />
-    <Compile Include="DataMember\Cargo.cs" />
+    <Compile Include="DataMember\BE_INFO.cs" />
+    <Compile Include="DataMember\BE_VENTA.cs" />
+    <Compile Include="DataMember\BE_VENTA_DETALLE.cs" />
+    <Compile Include="DataMember\CARGO.cs" />
+    <Compile Include="DataMember\EMPRESA.cs" />
     <Compile Include="Service1.svc.cs">
       <DependentUpon>Service1.svc</DependentUpon>
     </Compile>

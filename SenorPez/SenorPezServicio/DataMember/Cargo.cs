@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SenorPezServicio.DataMember;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -10,7 +11,7 @@ namespace SenorPezServicio
 {
   
     [DataContract]
-    public class Cargo
+    public class CARGO 
     {
         [DataMember]
         public Int32  iCodCargo         { get; set; }        
@@ -29,6 +30,18 @@ namespace SenorPezServicio
         [DataMember]
         public Int32 iCodPerfil{ get; set; }
         [DataMember]
+        public Int32 iCodEmpresa { get; set; }
+        [DataMember]
         public String vUsuario { get; set; }
+        [DataMember]
+        public String vNombreEmpresa { get; set; }
+        [DataMember]
+        public String vLogoEmpresa { get; set; }
+        [DataMember]
+        public String vTelefonoEmpresa { get; set; }
+        [DataMember]
+        public String vDireccionEmpresa { get; set; }
+        [DataMember]
+        public String vRucEmpresa { get; set; }
     }
 }

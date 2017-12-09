@@ -15,9 +15,9 @@ namespace SenorPezPrincipal.ServiceReference1 {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Cargo", Namespace="http://schemas.datacontract.org/2004/07/SenorPezServicio")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CARGO", Namespace="http://schemas.datacontract.org/2004/07/SenorPezServicio")]
     [System.SerializableAttribute()]
-    public partial class Cargo : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+    public partial class CARGO : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
@@ -38,13 +38,31 @@ namespace SenorPezPrincipal.ServiceReference1 {
         private int iCodEmpleadoField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int iCodEmpresaField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int iCodPerfilField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string vDireccionEmpresaField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string vLogoEmpresaField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string vNombreCargoField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string vNombreEmpresaField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string vPasswordField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string vRucEmpresaField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string vTelefonoEmpresaField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string vUsuarioField;
@@ -125,6 +143,19 @@ namespace SenorPezPrincipal.ServiceReference1 {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public int iCodEmpresa {
+            get {
+                return this.iCodEmpresaField;
+            }
+            set {
+                if ((this.iCodEmpresaField.Equals(value) != true)) {
+                    this.iCodEmpresaField = value;
+                    this.RaisePropertyChanged("iCodEmpresa");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public int iCodPerfil {
             get {
                 return this.iCodPerfilField;
@@ -133,6 +164,32 @@ namespace SenorPezPrincipal.ServiceReference1 {
                 if ((this.iCodPerfilField.Equals(value) != true)) {
                     this.iCodPerfilField = value;
                     this.RaisePropertyChanged("iCodPerfil");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string vDireccionEmpresa {
+            get {
+                return this.vDireccionEmpresaField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.vDireccionEmpresaField, value) != true)) {
+                    this.vDireccionEmpresaField = value;
+                    this.RaisePropertyChanged("vDireccionEmpresa");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string vLogoEmpresa {
+            get {
+                return this.vLogoEmpresaField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.vLogoEmpresaField, value) != true)) {
+                    this.vLogoEmpresaField = value;
+                    this.RaisePropertyChanged("vLogoEmpresa");
                 }
             }
         }
@@ -151,6 +208,19 @@ namespace SenorPezPrincipal.ServiceReference1 {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public string vNombreEmpresa {
+            get {
+                return this.vNombreEmpresaField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.vNombreEmpresaField, value) != true)) {
+                    this.vNombreEmpresaField = value;
+                    this.RaisePropertyChanged("vNombreEmpresa");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string vPassword {
             get {
                 return this.vPasswordField;
@@ -159,6 +229,32 @@ namespace SenorPezPrincipal.ServiceReference1 {
                 if ((object.ReferenceEquals(this.vPasswordField, value) != true)) {
                     this.vPasswordField = value;
                     this.RaisePropertyChanged("vPassword");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string vRucEmpresa {
+            get {
+                return this.vRucEmpresaField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.vRucEmpresaField, value) != true)) {
+                    this.vRucEmpresaField = value;
+                    this.RaisePropertyChanged("vRucEmpresa");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string vTelefonoEmpresa {
+            get {
+                return this.vTelefonoEmpresaField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.vTelefonoEmpresaField, value) != true)) {
+                    this.vTelefonoEmpresaField = value;
+                    this.RaisePropertyChanged("vTelefonoEmpresa");
                 }
             }
         }
@@ -186,12 +282,76 @@ namespace SenorPezPrincipal.ServiceReference1 {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="BE_INFO", Namespace="http://schemas.datacontract.org/2004/07/SenorPezServicio.DataMember")]
+    [System.SerializableAttribute()]
+    public partial class BE_INFO : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int iCodEmpresaField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private decimal iTotalField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int iCodEmpresa {
+            get {
+                return this.iCodEmpresaField;
+            }
+            set {
+                if ((this.iCodEmpresaField.Equals(value) != true)) {
+                    this.iCodEmpresaField = value;
+                    this.RaisePropertyChanged("iCodEmpresa");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public decimal iTotal {
+            get {
+                return this.iTotalField;
+            }
+            set {
+                if ((this.iTotalField.Equals(value) != true)) {
+                    this.iTotalField = value;
+                    this.RaisePropertyChanged("iTotal");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.IService1")]
     public interface IService1 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Login", ReplyAction="http://tempuri.org/IService1/LoginResponse")]
-        System.Collections.Generic.List<SenorPezPrincipal.ServiceReference1.Cargo> Login(SenorPezPrincipal.ServiceReference1.Cargo _Obj);
+        SenorPezPrincipal.ServiceReference1.CARGO Login(SenorPezPrincipal.ServiceReference1.CARGO _Obj);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GET_INFO", ReplyAction="http://tempuri.org/IService1/GET_INFOResponse")]
+        SenorPezPrincipal.ServiceReference1.BE_INFO GET_INFO(SenorPezPrincipal.ServiceReference1.BE_INFO _Obj);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -221,8 +381,12 @@ namespace SenorPezPrincipal.ServiceReference1 {
                 base(binding, remoteAddress) {
         }
         
-        public System.Collections.Generic.List<SenorPezPrincipal.ServiceReference1.Cargo> Login(SenorPezPrincipal.ServiceReference1.Cargo _Obj) {
+        public SenorPezPrincipal.ServiceReference1.CARGO Login(SenorPezPrincipal.ServiceReference1.CARGO _Obj) {
             return base.Channel.Login(_Obj);
+        }
+        
+        public SenorPezPrincipal.ServiceReference1.BE_INFO GET_INFO(SenorPezPrincipal.ServiceReference1.BE_INFO _Obj) {
+            return base.Channel.GET_INFO(_Obj);
         }
     }
 }

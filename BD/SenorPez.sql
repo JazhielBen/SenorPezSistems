@@ -1,16 +1,62 @@
-USE master
+USE MASTER
 GO
-
-IF EXISTS(SELECT * FROM DBO.SYSDATABASES WHERE NAME = 'BDPez') 
+IF EXISTS(SELECT * FROM DBO.SYSDATABASES WHERE NAME = 'BD_PEZ') 
 BEGIN
     USE MASTER 
-	DROP DATABASE BDPez 
+	DROP DATABASE BD_PEZ 
 END
 GO
-
-CREATE DATABASE BDPez;
+CREATE DATABASE BD_PEZ;
 GO
-USE BDPez
+USE BD_PEZ
+GO
+IF OBJECT_ID('DECRYPTED_TEXT') IS NOT NULL
+BEGIN
+	DROP FUNCTION DECRYPTED_TEXT;
+END
+GO
+CREATE FUNCTION DECRYPTED_TEXT 
+(@Text varbinary(MAX))
+RETURNS VARCHAR(MAX)
+AS BEGIN
+    DECLARE @RetrunText VARCHAR(MAX)	
+    DECLARE @Constant VARCHAR(MAX) = 'M@tSo5T'
+    SET @RetrunText = convert(varchar(100),DecryptByPassPhrase(@Constant,LTRIM(RTRIM(@Text))))
+    RETURN @RetrunText
+END
+GO
+IF OBJECT_ID('ENCRYPTED_TEXT') IS NOT NULL
+BEGIN
+	DROP FUNCTION ENCRYPTED_TEXT;
+END
+GO
+CREATE FUNCTION ENCRYPTED_TEXT 
+(@Text VARCHAR(MAX))
+RETURNS VARBINARY(MAX)
+AS BEGIN
+    DECLARE @Constant VARCHAR(MAX) = 'M@tSo5T'
+    DECLARE @Encry VARBINARY(MAX) 
+	SET @Encry = EncryptByPassPhrase(@Constant,  LTRIM(RTRIM(@Text)))
+    RETURN @Encry
+END
+GO
+IF OBJECT_ID('MAE_EMPRESA') IS NOT NULL
+BEGIN
+	DROP TABLE MAE_EMPRESA;
+END
+GO
+CREATE TABLE MAE_EMPRESA
+(
+	iCodEmpresa INTEGER PRIMARY KEY IDENTITY(1,1),
+	vNombreEmpresa VARCHAR(150),
+	vLogoEmpresa VARCHAR(MAX),
+	vTelefonoEmpresa VARCHAR(15),
+	vDireccionEmpresa VARCHAR(100),
+	vRucEmpresa VARCHAR(11),
+	vDniRepresentante VARCHAR(10),
+	cEstado CHAR(1) DEFAULT ('1'),
+	bActivo BIT DEFAULT 1
+)
 GO
 IF OBJECT_ID('MAE_PERFILES') IS NOT NULL
 BEGIN
@@ -160,8 +206,9 @@ CREATE TABLE EMPLEADO
 iCodEmpleado INTEGER NOT NULL PRIMARY KEY IDENTITY (1,1),
 iCodPersona INTEGER NOT NULL REFERENCES MAE_PERSONA,
 iCodCargo INTEGER NOT NULL REFERENCES MAE_CARGO,
+iCodEmpresa INTEGER NOT NULL  REFERENCES MAE_EMPRESA,
 vUsuario VARCHAR(200) NOT NULL,
-vPassword VARCHAR(200) NOT NULL, 
+vPassword VARBINARY(200) NOT NULL, 
 dtFechaRegistro DATETIME DEFAULT GETDATE(),
 bActivo BIT DEFAULT 1
 )
@@ -281,6 +328,8 @@ PRINT 'TABLE PERFIL_USUARIO'
 GO
 ----------------------------------------
 PRINT 'INSERT DATA'
+INSERT INTO MAE_EMPRESA (vNombreEmpresa,vLogoEmpresa,vTelefonoEmpresa,vDireccionEmpresa,vRucEmpresa,vDniRepresentante) 
+				 VALUES ('SEÑOR PEZ','https://pbs.twimg.com/profile_images/378800000572205704/408f328d9043d58807ed54e162380aaf.png','(01) 5790849','Av. Proceres de la independencia N°1726 - 2do Piso San Juan De Lurigancho, Lima, Peru' ,'20549787313','70423178')
 
 INSERT INTO MAE_PERFILES (vNombrePerfil) VALUES( 'NO' )
 INSERT INTO MAE_PERFILES (vNombrePerfil) VALUES( 'PARCIAL' )
@@ -293,11 +342,10 @@ INSERT INTO [dbo].[MAE_PERSONA]([vNombre],[vApellido],[dtFechaNacimiento],[vTele
 
 INSERT INTO [dbo].[MAE_CARGO](vNombreCargo,iAcceso,iCodEmpleado)
 	VALUES ('ADMIN1',1,777)
-
-INSERT INTO [dbo].[EMPLEADO](iCodPersona,iCodCargo,vUsuario,vPassword)
-	VALUES(1,1,'ADMIN','JERAL')
-INSERT INTO [dbo].[EMPLEADO](iCodPersona,iCodCargo,vUsuario,vPassword)
-	VALUES(2,1,'ADMIN','JAZHIEL')
+INSERT INTO [dbo].[EMPLEADO](iCodPersona,iCodCargo,vUsuario,vPassword,iCodEmpresa)
+	VALUES(1,1,'JERAL',DBO.ENCRYPTED_TEXT('JERAL.BENITEZ'),1)
+INSERT INTO [dbo].[EMPLEADO](iCodPersona,iCodCargo,vUsuario,vPassword,iCodEmpresa)
+	VALUES(2,1,'JAZHIEL',DBO.ENCRYPTED_TEXT('JAZHIEL.BENITEZ'),1)
 
 INSERT INTO PERFIL_USUARIO (iCodPerfil,iCodCargo)VALUES(3,1)
 --------------------------------------------
@@ -315,11 +363,16 @@ CREATE PROCEDURE [dbo].[SP_LOGIN]
 )
 AS
 BEGIN
-	SELECT 		 
+	SELECT TOP 1 
 		 U.iCodPerfil
 		,E.iCodEmpleado
 		,E.vUsuario
-		,E.vPassword
+		,DBO.DECRYPTED_TEXT(E.vPassword) 'vPassword'
+		,EM.vNombreEmpresa
+		,EM.vRucEmpresa
+		,EM.vDireccionEmpresa
+		,EM.vLogoEmpresa
+		,EM.vTelefonoEmpresa
 	FROM
 	[dbo].[MAE_CARGO] c
 	INNER JOIN PERFIL_USUARIO u
@@ -328,15 +381,18 @@ BEGIN
 	ON E.iCodCargo = C.iCodCargo
 	INNER JOIN [dbo].[MAE_PERSONA] PE
 	ON PE.iCodPersona = E.iCodPersona
-	WHERE vNombreCargo =ISNULL(RTRIM(LTRIM(@vUsuario)),vNombreCargo)
-	AND  vPassword = ISNULL(RTRIM(LTRIM(@vPassword)),vPassword)
+	INNER JOIN [dbo].[MAE_EMPRESA] EM
+	ON EM.iCodEmpresa = E.iCodEmpresa
+	WHERE E.vUsuario =RTRIM(LTRIM(@vUsuario))
+	AND DBO.DECRYPTED_TEXT(E.vPassword) = RTRIM(LTRIM(@vPassword))
 	AND C.bActivo = 1 AND U.bActivo = 1 AND E.bActivo = 1 AND PE.bActivo = 1
+	ORDER BY E.iCodEmpleado DESC
 END
 GO
 PRINT 'PROCEDURE [dbo].[SP_LOGIN]' 
 --------------------------------------------
 
-EXEC [dbo].[SP_LOGIN] 'ADMIN1','JAZHIEL'
+EXEC [dbo].[SP_LOGIN] 'ADMIN','JAZHIEL'
 --------------------------------------------
 --CONSULTAS
 --------------------------------------------

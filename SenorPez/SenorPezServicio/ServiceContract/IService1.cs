@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SenorPezServicio.DataMember;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -12,7 +13,8 @@ namespace SenorPezServicio
     public interface IService1
     {
         [OperationContract]
-        List<Cargo> Login(Cargo _Obj);
-
+        CARGO Login(CARGO _Obj);
+        [OperationContract]
+        BE_INFO GET_INFO(BE_INFO _Obj);
     }
 }
