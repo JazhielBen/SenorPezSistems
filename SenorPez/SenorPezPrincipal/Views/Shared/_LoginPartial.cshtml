@@ -1,18 +1,25 @@
-﻿@if (Request.IsAuthenticated)
+﻿
+      @if (Request.IsAuthenticated && HttpContext.Current.Session["Cargo_Empleado"] != null)
 {
-     <ul class="nav">
-        <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
-        <li>@Html.ActionLink("Mantenimiento", "Index", "Mantenimiento")</li>
-        <li>@Html.ActionLink("Operaciones", "About", "Home")</li>
-        <li>@Html.ActionLink("Reportes", "Contact", "Home")</li> 
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Cerrar sesión</a></li>       
+    List<SenorPezPrincipal.ServiceReference1.BE_TBL_MENU> oListaPermisos = (List<SenorPezPrincipal.ServiceReference1.BE_TBL_MENU>)@HttpContext.Current.Session["ListaMenus"];        
+    <ul class="nav">
+        @foreach (var oPermiso in oListaPermisos)
+        { <li>
+            <a href="@Url.Content("~")@oPermiso.vNombreControlador/@oPermiso.vNombreAction">
+                <i class="material-icons">@oPermiso.vIconMaterialize</i>
+                <p>@oPermiso.vNombreMenu</p>
+            </a>
+        </li>
+        }
+        <li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="material-icons">arrow_back</i>
+            <p>Cerrar sesión</p>
+        </a></li>
     </ul> 
 }
 else
 {
     <ul class="nav">
-        @*<li style="text-align:left;">@Html.ActionLink("Registrarse", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>*@
-        <li style="text-align:left;">@Html.ActionLink("Iniciar sesión", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        <li style="text-align: left;">@Html.ActionLink("Iniciar sesión", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
     </ul>
 }
 @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))

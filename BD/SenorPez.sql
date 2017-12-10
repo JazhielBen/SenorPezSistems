@@ -156,26 +156,6 @@ GO
 PRINT 'TABLE MAE_PROVEEDOR'
 GO
 
-/*MAE_CARGO*/
-IF EXISTS(SELECT * FROM SYSOBJECTS WHERE NAME = 'MAE_CARGO')
-BEGIN
-      DROP TABLE MAE_CARGO
-END
-
-CREATE TABLE MAE_CARGO
-(
-iCodCargo INTEGER NOT NULL PRIMARY KEY IDENTITY (1,1),
-vNombreCargo VARCHAR(200) NOT NULL,
-iAcceso INTEGER NOT NULL,
-iCodEmpleado INTEGER NOT NULL,
-dtFechaRegistro DATETIME DEFAULT GETDATE(),
-bActivo BIT DEFAULT 1
-)
-GO
-
-PRINT 'TABLE MAE_CARGO'
-GO
-
 /*CLIENTE*/
 IF EXISTS(SELECT * FROM SYSOBJECTS WHERE NAME = 'CLIENTE')
 BEGIN
@@ -205,7 +185,6 @@ CREATE TABLE EMPLEADO
 (
 iCodEmpleado INTEGER NOT NULL PRIMARY KEY IDENTITY (1,1),
 iCodPersona INTEGER NOT NULL REFERENCES MAE_PERSONA,
-iCodCargo INTEGER NOT NULL REFERENCES MAE_CARGO,
 iCodEmpresa INTEGER NOT NULL  REFERENCES MAE_EMPRESA,
 vUsuario VARCHAR(200) NOT NULL,
 vPassword VARBINARY(200) NOT NULL, 
@@ -319,35 +298,81 @@ CREATE TABLE PERFIL_USUARIO
 (
 iCodPerfilUsuario	INTEGER NOT NULL PRIMARY KEY IDENTITY (1,1),
 iCodPerfil INTEGER NOT NULL REFERENCES MAE_PERFILES,
-iCodCargo INTEGER NOT NULL REFERENCES [dbo].[MAE_CARGO],
+iCodEmpleado INTEGER NOT NULL REFERENCES [dbo].[EMPLEADO],
 bActivo BIT DEFAULT 1
 )
 GO
-
 PRINT 'TABLE PERFIL_USUARIO'
 GO
+IF OBJECT_ID('TBL_MENU') IS NOT NULL
+BEGIN
+	DROP TABLE TBL_MENU;
+END
+GO
+CREATE TABLE TBL_MENU
+(
+	iCodMenuItem		INTEGER PRIMARY KEY IDENTITY(1,1) NOT NULL,
+	vIconMaterialize	VARCHAR(MAX) NOT NULL,
+	vNombreMenu			VARCHAR(MAX) NOT NULL,
+	vNombreAction		VARCHAR(MAX) NOT NULL,
+	vNombreControlador	VARCHAR(MAX) NOT NULL,
+	bActivo				BIT DEFAULT 1
+)
+GO
+IF OBJECT_ID('TBL_MENU_PERFIL') IS NOT NULL
+BEGIN
+	DROP TABLE TBL_MENU_PERFIL;
+END
+GO
+CREATE TABLE TBL_MENU_PEFRIL
+(
+	iCodMenuPerfil		INTEGER PRIMARY KEY IDENTITY(1,1) NOT NULL,
+	iCodMenuItem		INTEGER REFERENCES TBL_MENU,
+	iCodEmpresa			INTEGER REFERENCES MAE_EMPRESA  NOT NULL,
+	iCodPerfil			INTEGER REFERENCES MAE_PERFILES  NOT NULL,	
+	bActivo				BIT DEFAULT 1
+)
 ----------------------------------------
 PRINT 'INSERT DATA'
 INSERT INTO MAE_EMPRESA (vNombreEmpresa,vLogoEmpresa,vTelefonoEmpresa,vDireccionEmpresa,vRucEmpresa,vDniRepresentante) 
 				 VALUES ('SEÑOR PEZ','https://pbs.twimg.com/profile_images/378800000572205704/408f328d9043d58807ed54e162380aaf.png','(01) 5790849','Av. Proceres de la independencia N°1726 - 2do Piso San Juan De Lurigancho, Lima, Peru' ,'20549787313','70423178')
 
-INSERT INTO MAE_PERFILES (vNombrePerfil) VALUES( 'NO' )
-INSERT INTO MAE_PERFILES (vNombrePerfil) VALUES( 'PARCIAL' )
-INSERT INTO MAE_PERFILES (vNombrePerfil) VALUES( 'TOTAL' ) 
+INSERT INTO MAE_PERFILES (vNombrePerfil) VALUES( 'ADMIN' )
+INSERT INTO MAE_PERFILES (vNombrePerfil) VALUES( 'MESERO') 
 
 INSERT INTO [dbo].[MAE_PERSONA]([vNombre],[vApellido],[dtFechaNacimiento],[vTelefono],[vMail],[vDireccion],[vDocPersona],[iCodEmpleado],[dtFechaRegistro],[bActivo])
      VALUES('JERAL N.','BENITES GONZALES','1994-11-04 00:00:00','999900948','JeralBenites@gmail.com','luriwashintown','48610078',777,GETDATE(),1)
 INSERT INTO [dbo].[MAE_PERSONA]([vNombre],[vApellido],[dtFechaNacimiento],[vTelefono],[vMail],[vDireccion],[vDocPersona],[iCodEmpleado],[dtFechaRegistro],[bActivo])
      VALUES('JAZHIEL N.','BENITES GONZALES','1992-25-11 00:00:00','999900180','Jazhielbg@gmail.com','luriwashintown','47753860',888,GETDATE(),1)
 
-INSERT INTO [dbo].[MAE_CARGO](vNombreCargo,iAcceso,iCodEmpleado)
-	VALUES ('ADMIN1',1,777)
-INSERT INTO [dbo].[EMPLEADO](iCodPersona,iCodCargo,vUsuario,vPassword,iCodEmpresa)
-	VALUES(1,1,'JERAL',DBO.ENCRYPTED_TEXT('JERAL.BENITEZ'),1)
-INSERT INTO [dbo].[EMPLEADO](iCodPersona,iCodCargo,vUsuario,vPassword,iCodEmpresa)
-	VALUES(2,1,'JAZHIEL',DBO.ENCRYPTED_TEXT('JAZHIEL.BENITEZ'),1)
+INSERT INTO [dbo].[EMPLEADO](iCodPersona,vUsuario,vPassword,iCodEmpresa)
+	VALUES(1,'JERAL',DBO.ENCRYPTED_TEXT('JERAL.BENITEZ'),1)
+INSERT INTO [dbo].[EMPLEADO](iCodPersona,vUsuario,vPassword,iCodEmpresa)
+	VALUES(2,'JAZHIEL',DBO.ENCRYPTED_TEXT('JAZHIEL.BENITEZ'),1)
 
-INSERT INTO PERFIL_USUARIO (iCodPerfil,iCodCargo)VALUES(3,1)
+INSERT INTO PERFIL_USUARIO (iCodPerfil,iCodEmpleado)VALUES(1,1)
+INSERT INTO PERFIL_USUARIO (iCodPerfil,iCodEmpleado)VALUES(2,2)
+
+INSERT INTO TBL_MENU(vIconMaterialize,vNombreMenu,vNombreAction,vNombreControlador)
+	 VALUES ('apps','Inicio','Index','Home')
+INSERT INTO TBL_MENU(vIconMaterialize,vNombreMenu,vNombreAction,vNombreControlador)
+	 VALUES ('build','Mantenimiento','Index','Mantenimiento')
+INSERT INTO TBL_MENU(vIconMaterialize,vNombreMenu,vNombreAction,vNombreControlador)
+	 VALUES ('euro_symbol','Operaciones','About','Home')
+INSERT INTO TBL_MENU(vIconMaterialize,vNombreMenu,vNombreAction,vNombreControlador)
+	 VALUES ('toc','Reportes','Contact','Home')	
+
+INSERT INTO TBL_MENU_PEFRIL(iCodMenuItem,iCodEmpresa,iCodPerfil)
+	 VALUES (1,1,1)
+INSERT INTO TBL_MENU_PEFRIL(iCodMenuItem,iCodEmpresa,iCodPerfil)
+	 VALUES (2,1,1)
+INSERT INTO TBL_MENU_PEFRIL(iCodMenuItem,iCodEmpresa,iCodPerfil)
+	 VALUES (3,1,1)
+INSERT INTO TBL_MENU_PEFRIL(iCodMenuItem,iCodEmpresa,iCodPerfil)
+	 VALUES (4,1,1)
+
+INSERT INTO TBL_MENU_PEFRIL(iCodMenuItem,iCodEmpresa,iCodPerfil)
+	 VALUES (4,1,2)
 --------------------------------------------
 PRINT 'PROCEDURE'
 IF OBJECT_ID('[dbo].[SP_LOGIN]') IS NOT NULL
@@ -355,7 +380,7 @@ BEGIN
 	DROP PROCEDURE [dbo].[SP_LOGIN]
 END
 GO
---[dbo].[SP_LOGIN]
+--[dbo].[SP_LOGIN] 'JAZHIEL','JAZHIEL.BENITEZ'
 CREATE PROCEDURE [dbo].[SP_LOGIN]
 (
 	@vUsuario VARCHAR(200) = NULL,
@@ -368,31 +393,122 @@ BEGIN
 		,E.iCodEmpleado
 		,E.vUsuario
 		,DBO.DECRYPTED_TEXT(E.vPassword) 'vPassword'
+		,EM.iCodEmpresa
 		,EM.vNombreEmpresa
 		,EM.vRucEmpresa
 		,EM.vDireccionEmpresa
 		,EM.vLogoEmpresa
 		,EM.vTelefonoEmpresa
 	FROM
-	[dbo].[MAE_CARGO] c
-	INNER JOIN PERFIL_USUARIO u
-	ON U.iCodCargo = C.iCodCargo
+	PERFIL_USUARIO u
 	INNER JOIN  [dbo].[EMPLEADO] E
-	ON E.iCodCargo = C.iCodCargo
+	ON E.iCodEmpleado = U.iCodEmpleado
 	INNER JOIN [dbo].[MAE_PERSONA] PE
 	ON PE.iCodPersona = E.iCodPersona
 	INNER JOIN [dbo].[MAE_EMPRESA] EM
 	ON EM.iCodEmpresa = E.iCodEmpresa
-	WHERE E.vUsuario =RTRIM(LTRIM(@vUsuario))
+	WHERE E.vUsuario = RTRIM(LTRIM(@vUsuario))
 	AND DBO.DECRYPTED_TEXT(E.vPassword) = RTRIM(LTRIM(@vPassword))
-	AND C.bActivo = 1 AND U.bActivo = 1 AND E.bActivo = 1 AND PE.bActivo = 1
+	AND U.bActivo = 1 AND E.bActivo = 1 AND PE.bActivo = 1 AND EM.bActivo = 1 AND EM.cEstado = '1'
 	ORDER BY E.iCodEmpleado DESC
 END
 GO
 PRINT 'PROCEDURE [dbo].[SP_LOGIN]' 
 --------------------------------------------
-
-EXEC [dbo].[SP_LOGIN] 'ADMIN','JAZHIEL'
+IF OBJECT_ID('[dbo].[SP_CARGA_MENU]') IS NOT NULL
+BEGIN
+	DROP PROCEDURE [dbo].[SP_CARGA_MENU]
+END
+GO
+--[dbo].[SP_CARGA_MENU] 1,1,2
+CREATE PROCEDURE [dbo].[SP_CARGA_MENU]
+(
+	@iCodEmpresa	INTEGER,
+	@iCodPerfil		INTEGER,
+	@iCodEmpleado	INTEGER
+)
+AS
+BEGIN
+	SELECT 
+		M.vIconMaterialize,
+		M.vNombreMenu,
+		M.vNombreAction,
+		M.vNombreControlador
+	FROM DBO.TBL_MENU M
+	INNER JOIN TBL_MENU_PEFRIL MP
+	ON MP.iCodMenuItem = M.iCodMenuItem
+	INNER JOIN PERFIL_USUARIO UP
+	ON UP.iCodPerfil = MP.iCodPerfil
+	INNER JOIN  MAE_PERFILES MPER
+	ON UP.iCodPerfil = MPER.iCodPerfiles
+	INNER JOIN [dbo].[EMPLEADO] E
+	ON E.iCodEmpleado = UP.iCodEmpleado
+	WHERE UP.iCodPerfil = @iCodPerfil
+	AND E.iCodEmpleado = @iCodEmpleado
+	AND E.iCodEmpresa  = @iCodEmpresa
+END
+GO
+PRINT 'PROCEDURE [dbo].[SP_CARGA_MENU]' 
+--------------------------------------------
+IF OBJECT_ID('[dbo].[SP_LOADINFO]') IS NOT NULL
+BEGIN
+	DROP PROCEDURE [dbo].[SP_LOADINFO]
+END
+GO
+--[dbo].[SP_LOADINFO]
+CREATE PROCEDURE [dbo].[SP_LOADINFO]
+(
+	@iCodEmpresa INTEGER = NULL
+)
+AS
+BEGIN
+	SELECT ISNULL(SUM(nTotalVenta),0.00) 'iTotal'
+	FROM [dbo].[VENTA] VE
+	INNER JOIN [dbo].[EMPLEADO] EM
+	ON EM.iCodEmpleado = VE.iCodEmpleado
+	WHERE EM.iCodEmpresa = @iCodEmpresa
+	AND VE.bActivo = 1 
+	AND EM.bActivo = 1 
+	AND YEAR(VE.dtFechaRegistro)  = YEAR(GETDATE())
+	AND MONTH(VE.dtFechaRegistro) = MONTH(GETDATE())
+	AND DAY(VE.dtFechaRegistro)   = DAY(GETDATE())
+END
+GO
+PRINT 'PROCEDURE [dbo].[SP_LOADINFO]' 
+--------------------------------------------
+IF OBJECT_ID('[dbo].[SP_LISTAR_PERSONAL]') IS NOT NULL
+BEGIN
+	DROP PROCEDURE [dbo].[SP_LISTAR_PERSONAL]
+END
+GO
+-- [dbo].[SP_LISTAR_PERSONAL] 1
+CREATE PROCEDURE [dbo].[SP_LISTAR_PERSONAL]
+(@iCodEmpresa INTEGER)
+AS
+BEGIN
+	SELECT 
+		E.iCodEmpleado,
+		E.vUsuario,
+		PE.vNombre,
+		PE.vApellido,
+		PE.vTelefono,
+		PE.vMail,
+		PE.vDocPersona,
+		MP.vNombrePerfil
+	FROM [dbo].[EMPLEADO] E
+	INNER JOIN [dbo].[MAE_PERSONA] PE
+	ON E.iCodPersona = PE.iCodPersona
+	INNER JOIN PERFIL_USUARIO PU
+	ON PU.iCodEmpleado = E.iCodEmpleado
+	INNER JOIN MAE_PERFILES MP
+	ON PU.iCodPerfil = MP.iCodPerfiles
+	WHERE E.iCodEmpresa = @iCodEmpresa
+	ORDER BY E.iCodEmpleado DESC
+END
+GO
+PRINT 'PROCEDURE [dbo].[SP_LISTAR_PERSONAL]' 
+--------------------------------------------
+EXEC [dbo].[SP_LOGIN] 'JERAL','JERAL.BENITEZ'
 --------------------------------------------
 --CONSULTAS
 --------------------------------------------

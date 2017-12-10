@@ -1,4 +1,5 @@
-﻿using SenorPezServicio.DataMember;
+﻿using Qaliwarma.Maestros.BE;
+using SenorPezServicio.DataMember;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace SenorPezServicio
 {
     public class Service1 : IService1
     {
-        public CARGO Login(CARGO _obj)
+        public BE_CARGO Login(BE_CARGO _obj)
         {
             DA_CARGO DA = new DA_CARGO();
             try
@@ -29,6 +30,30 @@ namespace SenorPezServicio
             try
             {
                 return DA.GET_INFO(_obj);
+            }
+            catch (Exception excepcion)
+            {
+                throw (excepcion);
+            }
+        }
+        public List<BE_TBL_MENU> LISTAR_MENU(BE_TBL_MENU _obj)
+        {
+            DA_CARGO DA = new DA_CARGO();
+            try
+            {
+                return DA.LISTAR_MENU(_obj);
+            }
+            catch (Exception excepcion)
+            {
+                throw (excepcion);
+            }
+        }
+        public List<BE_CARGO> LISTAR_PERSONAL(BE_CARGO _obj)
+        {
+            DA_CARGO DA = new DA_CARGO();
+            try
+            {
+                return DA.LISTAR_PERSONAL(_obj);
             }
             catch (Exception excepcion)
             {

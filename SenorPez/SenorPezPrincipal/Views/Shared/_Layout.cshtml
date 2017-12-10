@@ -9,22 +9,22 @@
     <title>@ViewBag.Title</title>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
     <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-    <!-- Bootstrap core CSS     -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <!--  Material Dashboard CSS    -->
     <link href="~/Content/css/material-dashboard.css" rel="stylesheet" />
-    <!--     Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
     @Html.Hidden("UrlControlSession", Url.Action("Index", "ControlSession"))
 
 </head>
 <body>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
     <div class="wrapper">
-        @if (Request.IsAuthenticated)
+        @if (Request.IsAuthenticated && HttpContext.Current.Session["Cargo_Empleado"] != null)
         {
-            SenorPezPrincipal.ServiceReference1.CARGO Obj = (SenorPezPrincipal.ServiceReference1.CARGO)@HttpContext.Current.Session["Cargo_Empleado"];    
+            SenorPezPrincipal.ServiceReference1.BE_CARGO Obj = (SenorPezPrincipal.ServiceReference1.BE_CARGO)@HttpContext.Current.Session["Cargo_Empleado"];    
             <div class="sidebar" data-color="purple" data-image="../Images/sidebar-4.jpg">
                 <div class="logo-container">
                     <div class="logo" style="text-align: center">
@@ -41,7 +41,7 @@
             <div class="logo-container">
                 <div class="logo" style="text-align: center">
                     <img width="70" height="70" src="http://matsoft.pe.hu/images/logo60.png" data-placement="bottom" data-html="true">
-                    <h4 style="text-align: center">MatSoft V1.1</h4>
+                    <h4 style="text-align: center">MatSoft V1.0</h4>
                 </div>
             </div>
             <div class="sidebar-wrapper">
@@ -63,7 +63,7 @@
                     </div>
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-right">
-                            @if (Request.IsAuthenticated)
+                            @if (Request.IsAuthenticated && HttpContext.Current.Session["Cargo_Empleado"] != null)
                             {
                                 <li>
                                     <a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
@@ -92,7 +92,7 @@
                                     </a>
                                 </li>}
                         </ul>
-                        @if (Request.IsAuthenticated)
+                        @if (Request.IsAuthenticated && HttpContext.Current.Session["Cargo_Empleado"] != null)
                         {
                             <form class="navbar-form navbar-right" role="search">
                                 <div class="form-group  is-empty">
@@ -107,9 +107,9 @@
                 </div>
             </nav>
             @RenderBody()
-            @if (Request.IsAuthenticated)
+            @if (!Request.IsAuthenticated && HttpContext.Current.Session["Cargo_Empleado"] == null)
             {                
-                <footer class="footer">
+                <footer   style="position:fixed;bottom:0;left:0;width:100%;">
                     <div class="container-fluid">
                         <nav class="pull-left">
                             <ul>
@@ -137,22 +137,17 @@
                             <a href="http://matsoft.pe.hu/">MatSoft Return Modafacka</a>
                         </p>
                     </div>
-                </footer>}
+                </footer>
+            }
         </div>
     </div>
-
-    @Scripts.Render("~/bundles/jquery")
-    @RenderSection("scripts", required: false)
 </body>
-<!--   Core JS Files   -->
 <script src="~/Scripts/js/jquery-3.1.0.min.js"></script>
+<script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js" ></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script src="~/Scripts/js/material.min.js"></script>
-<!--  Charts Plugin -->
-<script src="~/Scripts/js/chartist.min.js"></script>
-<!--  Notifications Plugin    -->
+@*<script src="~/Scripts/js/chartist.min.js"></script>*@
 <script src="~/Scripts/js/bootstrap-notify.js"></script>
-<!-- Material Dashboard javascript methods -->
 <script src="~/Scripts/js/material-dashboard.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="~/Scripts/ControlSession.js" type="text/javascript"></script>

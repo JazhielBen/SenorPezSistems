@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/SenorPezServicio" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/SenorPezServicio" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:complexType name="CARGO">
+  <xs:complexType name="BE_CARGO">
     <xs:sequence>
       <xs:element minOccurs="0" name="bActivo" type="xs:boolean" />
       <xs:element minOccurs="0" name="dtFechaRegistro" type="xs:dateTime" />
@@ -9,15 +9,27 @@
       <xs:element minOccurs="0" name="iCodEmpleado" type="xs:int" />
       <xs:element minOccurs="0" name="iCodEmpresa" type="xs:int" />
       <xs:element minOccurs="0" name="iCodPerfil" type="xs:int" />
+      <xs:element minOccurs="0" name="vApellido" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="vDireccionEmpresa" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="vDocPersona" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="vLogoEmpresa" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="vMail" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="vNombre" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="vNombreCargo" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="vNombreEmpresa" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="vNombrePerfil" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="vPassword" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="vRucEmpresa" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="vTelefono" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="vTelefonoEmpresa" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="vUsuario" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="CARGO" nillable="true" type="tns:CARGO" />
+  <xs:element name="BE_CARGO" nillable="true" type="tns:BE_CARGO" />
+  <xs:complexType name="ArrayOfBE_CARGO">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BE_CARGO" nillable="true" type="tns:BE_CARGO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBE_CARGO" nillable="true" type="tns:ArrayOfBE_CARGO" />
 </xs:schema>
